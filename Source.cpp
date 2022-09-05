@@ -1,30 +1,30 @@
 #include <windows.h>
 #include <fstream>
-//При перерисовке поля происходит мерцание из-за отсутствия двойной буферизации
+//РџСЂРё РїРµСЂРµСЂРёСЃРѕРІРєРµ РїРѕР»СЏ РїСЂРѕРёСЃС…РѕРґРёС‚ РјРµСЂС†Р°РЅРёРµ РёР·-Р·Р° РѕС‚СЃСѓС‚СЃС‚РІРёСЏ РґРІРѕР№РЅРѕР№ Р±СѓС„РµСЂРёР·Р°С†РёРё
 
 
-//Включаем стиль windows 10 для элементов управления
+//Р’РєР»СЋС‡Р°РµРј СЃС‚РёР»СЊ windows 10 РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ
 #pragma comment(linker,"\"/manifestdependency:type='win32' \ name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-//Определяем цвета
+//РћРїСЂРµРґРµР»СЏРµРј С†РІРµС‚Р°
 #define gray_color RGB(135, 146, 112)
 #define black_color RGB(0,0,0)
 #define font_color RGB(154, 166, 128)
 
-//Определение функции обработки сообщений
+//РћРїСЂРµРґРµР»РµРЅРёРµ С„СѓРЅРєС†РёРё РѕР±СЂР°Р±РѕС‚РєРё СЃРѕРѕР±С‰РµРЅРёР№
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
-//Точка входа для win32 приложений
+//РўРѕС‡РєР° РІС…РѕРґР° РґР»СЏ win32 РїСЂРёР»РѕР¶РµРЅРёР№
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow)
 {
-	static char szAppName[] = "Tetris emulator"; //Заголовок окна
+	static char szAppName[] = "Tetris emulator"; //Р—Р°РіРѕР»РѕРІРѕРє РѕРєРЅР°
 
 
-	HWND hwnd; //Дескриптор окна
-	MSG msg; //Структура для сообщений windows
-	WNDCLASSEX wndclass; //Класс окна
+	HWND hwnd; //Р”РµСЃРєСЂРёРїС‚РѕСЂ РѕРєРЅР°
+	MSG msg; //РЎС‚СЂСѓРєС‚СѓСЂР° РґР»СЏ СЃРѕРѕР±С‰РµРЅРёР№ windows
+	WNDCLASSEX wndclass; //РљР»Р°СЃСЃ РѕРєРЅР°
 
-	//Описание класса главного окна
+	//РћРїРёСЃР°РЅРёРµ РєР»Р°СЃСЃР° РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°
 	wndclass.cbSize = sizeof(wndclass);
 	wndclass.style = CS_HREDRAW | CS_VREDRAW;
 	wndclass.lpfnWndProc = WndProc;
@@ -37,41 +37,41 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 	wndclass.lpszMenuName = NULL;
 	wndclass.lpszClassName = szAppName;
 	wndclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-	RegisterClassEx(&wndclass); //Регистрируем его в ОС
+	RegisterClassEx(&wndclass); //Р РµРіРёСЃС‚СЂРёСЂСѓРµРј РµРіРѕ РІ РћРЎ
 
-	//Создание главного окна, регистрация его в системе, в hwnd помещаеться указатель для дальнейшего обращения к нему
+	//РЎРѕР·РґР°РЅРёРµ РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°, СЂРµРіРёСЃС‚СЂР°С†РёСЏ РµРіРѕ РІ СЃРёСЃС‚РµРјРµ, РІ hwnd РїРѕРјРµС‰Р°РµС‚СЊСЃСЏ СѓРєР°Р·Р°С‚РµР»СЊ РґР»СЏ РґР°Р»СЊРЅРµР№С€РµРіРѕ РѕР±СЂР°С‰РµРЅРёСЏ Рє РЅРµРјСѓ
 	hwnd = CreateWindow(
 		szAppName, 
-		"Tetris emulator V - 0.5", // заголовок
-		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU |  WS_MINIMIZEBOX, // Стиль, октключаем кнопку раскритыя на весь экран и возможность изменять размер окна
-		CW_USEDEFAULT, // Позиция по x по умалчанию
-		CW_USEDEFAULT, // позиция по умолчания
-		580, // ширина окна
-		475, // длинна окна
-		NULL, // указатель на родительское окно, у нас нет т.к. оно главное
-		NULL, // указатель на строку меню, у нас нет так что нулевой укащатель
-		hInstance, //описатель данной программы
+		"Tetris emulator V - 0.5", // Р·Р°РіРѕР»РѕРІРѕРє
+		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU |  WS_MINIMIZEBOX, // РЎС‚РёР»СЊ, РѕРєС‚РєР»СЋС‡Р°РµРј РєРЅРѕРїРєСѓ СЂР°СЃРєСЂРёС‚С‹СЏ РЅР° РІРµСЃСЊ СЌРєСЂР°РЅ Рё РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РёР·РјРµРЅСЏС‚СЊ СЂР°Р·РјРµСЂ РѕРєРЅР°
+		CW_USEDEFAULT, // РџРѕР·РёС†РёСЏ РїРѕ x РїРѕ СѓРјР°Р»С‡Р°РЅРёСЋ
+		CW_USEDEFAULT, // РїРѕР·РёС†РёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЏ
+		580, // С€РёСЂРёРЅР° РѕРєРЅР°
+		475, // РґР»РёРЅРЅР° РѕРєРЅР°
+		NULL, // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЂРѕРґРёС‚РµР»СЊСЃРєРѕРµ РѕРєРЅРѕ, Сѓ РЅР°СЃ РЅРµС‚ С‚.Рє. РѕРЅРѕ РіР»Р°РІРЅРѕРµ
+		NULL, // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂРѕРєСѓ РјРµРЅСЋ, Сѓ РЅР°СЃ РЅРµС‚ С‚Р°Рє С‡С‚Рѕ РЅСѓР»РµРІРѕР№ СѓРєР°С‰Р°С‚РµР»СЊ
+		hInstance, //РѕРїРёСЃР°С‚РµР»СЊ РґР°РЅРЅРѕР№ РїСЂРѕРіСЂР°РјРјС‹
 		NULL
 	); 
 
-	ShowWindow(hwnd, iCmdShow); //Отображаем окно 
-	UpdateWindow(hwnd); //Перерисовываем окно
+	ShowWindow(hwnd, iCmdShow); //РћС‚РѕР±СЂР°Р¶Р°РµРј РѕРєРЅРѕ 
+	UpdateWindow(hwnd); //РџРµСЂРµСЂРёСЃРѕРІС‹РІР°РµРј РѕРєРЅРѕ
 
-	while (GetMessage(&msg, NULL, 0, 0)) //Запускаем цикл обработки сообщений от windows
+	while (GetMessage(&msg, NULL, 0, 0)) //Р—Р°РїСѓСЃРєР°РµРј С†РёРєР» РѕР±СЂР°Р±РѕС‚РєРё СЃРѕРѕР±С‰РµРЅРёР№ РѕС‚ windows
 	{
-		TranslateMessage(&msg); //Передаем сообщение в WndProc
-		DispatchMessage(&msg); //Передаем сообщение в windows
+		TranslateMessage(&msg); //РџРµСЂРµРґР°РµРј СЃРѕРѕР±С‰РµРЅРёРµ РІ WndProc
+		DispatchMessage(&msg); //РџРµСЂРµРґР°РµРј СЃРѕРѕР±С‰РµРЅРёРµ РІ windows
 	}
 	return msg.wParam;
 }
 
 
-// Реализация главного класса
+// Р РµР°Р»РёР·Р°С†РёСЏ РіР»Р°РІРЅРѕРіРѕ РєР»Р°СЃСЃР°
 class ETetris {
 
 public:
 
-	ETetris() { //В конструкторе заполняем буфер экрана нулями
+	ETetris() { //Р’ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРµ Р·Р°РїРѕР»РЅСЏРµРј Р±СѓС„РµСЂ СЌРєСЂР°РЅР° РЅСѓР»СЏРјРё
 
 		for (int i = 0; i <= 19; i++) {
 			for (int j = 0; j<= 19; j++) {
@@ -80,7 +80,7 @@ public:
 		}
 		
 
-		TPen_gray = CreatePen(PS_SOLID, 1, gray_color); //Создаем кисти и перья GDI (Graphical Device Interface)
+		TPen_gray = CreatePen(PS_SOLID, 1, gray_color); //РЎРѕР·РґР°РµРј РєРёСЃС‚Рё Рё РїРµСЂСЊСЏ GDI (Graphical Device Interface)
 
 		TBrush_gray = CreateSolidBrush(gray_color);
 
@@ -91,7 +91,7 @@ public:
 		TBrush_font = CreateSolidBrush(font_color);
 	}
 
-	~ETetris() { //В деструкторе удалаяем GDI обьекты из памяти
+	~ETetris() { //Р’ РґРµСЃС‚СЂСѓРєС‚РѕСЂРµ СѓРґР°Р»Р°СЏРµРј GDI РѕР±СЊРµРєС‚С‹ РёР· РїР°РјСЏС‚Рё
 		DeleteObject(TPen_gray);
 		DeleteObject(TBrush_gray);
 		DeleteObject(TPen_black);
@@ -100,20 +100,20 @@ public:
 	}
 	
 
-	void CreateScreen(HDC Thdc) { // Функция перерисовки поля, принимает контекст утройтва HDC куда рисуем
+	void CreateScreen(HDC Thdc) { // Р¤СѓРЅРєС†РёСЏ РїРµСЂРµСЂРёСЃРѕРІРєРё РїРѕР»СЏ, РїСЂРёРЅРёРјР°РµС‚ РєРѕРЅС‚РµРєСЃС‚ СѓС‚СЂРѕР№С‚РІР° HDC РєСѓРґР° СЂРёСЃСѓРµРј
 		x_disp = 20;
 		y_disp = 20;
 
 		
 
-		ETetris::DrawFrame(Thdc, 10, 10, 415, 415); // Рисуем рамку
+		ETetris::DrawFrame(Thdc, 10, 10, 415, 415); // Р РёСЃСѓРµРј СЂР°РјРєСѓ
 
 
-		for (int j = 0; j <= 19; j++) { // Рисуем поле
+		for (int j = 0; j <= 19; j++) { // Р РёСЃСѓРµРј РїРѕР»Рµ
 			x_disp = 20;
 			for (int i = 0; i <= 19; i++) {
 				if (screen_buffer[i][j] == 0) {
-					DrawPixel(Thdc,Gray, x_disp, y_disp, 15, 15); // Функция рисования отдельного квадратика Пикселя
+					DrawPixel(Thdc,Gray, x_disp, y_disp, 15, 15); // Р¤СѓРЅРєС†РёСЏ СЂРёСЃРѕРІР°РЅРёСЏ РѕС‚РґРµР»СЊРЅРѕРіРѕ РєРІР°РґСЂР°С‚РёРєР° РџРёРєСЃРµР»СЏ
 				}
 				else
 				{
@@ -126,9 +126,9 @@ public:
 		}
 
 }
-	void SetPixelState(int x, int y) { // Функция для редактирования буфера экрана
+	void SetPixelState(int x, int y) { // Р¤СѓРЅРєС†РёСЏ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ Р±СѓС„РµСЂР° СЌРєСЂР°РЅР°
 		
-		if (screen_buffer[x-1][y-1] == 0) { // Инверсия состояния пикселя
+		if (screen_buffer[x-1][y-1] == 0) { // РРЅРІРµСЂСЃРёСЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ РїРёРєСЃРµР»СЏ
 			screen_buffer[x-1][y-1] = 1;
 		}
 		else
@@ -137,7 +137,7 @@ public:
 		}
 	}
 
-	void Fill(int x, int y) { // Рекурсивная функция заливки, принмает координаты точки
+	void Fill(int x, int y) { // Р РµРєСѓСЂСЃРёРІРЅР°СЏ С„СѓРЅРєС†РёСЏ Р·Р°Р»РёРІРєРё, РїСЂРёРЅРјР°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚С‹ С‚РѕС‡РєРё
 
 		if (x >= 0 && x < 20 && y >= 0 && y < 20 && screen_buffer[x][y] == 0 && screen_buffer[x][y] != 1)
 		{
@@ -150,7 +150,7 @@ public:
 		}
 	}
 
-	void Erase() { // Функция очистки поля
+	void Erase() { // Р¤СѓРЅРєС†РёСЏ РѕС‡РёСЃС‚РєРё РїРѕР»СЏ
 		for (int i = 0; i <= 19; i++) {
 			for (int j = 0; j <= 19; j++) {
 				screen_buffer[i][j] = 0;
@@ -158,7 +158,7 @@ public:
 		}
 	}
 
-	void SaveScreen() { // Функция сохранения содержимого буфера в файл
+	void SaveScreen() { // Р¤СѓРЅРєС†РёСЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ Р±СѓС„РµСЂР° РІ С„Р°Р№Р»
 
 		std::ofstream ScreenFile("ScreenBuffer.txt");
 		for (int i = 0; i <= 19; i++) {
@@ -171,12 +171,12 @@ public:
 		ScreenFile.close();
 	}
 
-	void OpenScreen(HWND hwnd) { // Функция чтения из файла буфера экрана
+	void OpenScreen(HWND hwnd) { // Р¤СѓРЅРєС†РёСЏ С‡С‚РµРЅРёСЏ РёР· С„Р°Р№Р»Р° Р±СѓС„РµСЂР° СЌРєСЂР°РЅР°
 		char buff[21];
 		std::ifstream Screen("ScreenBuffer.txt");
 
 		if (!Screen.is_open()) {
-			MessageBox(hwnd, "Поле не сохранено или файл был поврежден!", "Ой", NULL);
+			MessageBox(hwnd, "РџРѕР»Рµ РЅРµ СЃРѕС…СЂР°РЅРµРЅРѕ РёР»Рё С„Р°Р№Р» Р±С‹Р» РїРѕРІСЂРµР¶РґРµРЅ!", "РћР№", NULL);
 		}
 		else {
 			int j = 0;
@@ -202,33 +202,33 @@ public:
 	}
 
 private:
-	enum colors {Gray, Black};  // Состояния пикселя
-	int screen_buffer[20][20]; // Буфер экрана
+	enum colors {Gray, Black};  // РЎРѕСЃС‚РѕСЏРЅРёСЏ РїРёРєСЃРµР»СЏ
+	int screen_buffer[20][20]; // Р‘СѓС„РµСЂ СЌРєСЂР°РЅР°
 	int x_disp, y_disp;
 
-	 HBRUSH TBrush_gray; // Кисти и перья
+	 HBRUSH TBrush_gray; // РљРёСЃС‚Рё Рё РїРµСЂСЊСЏ
 	 HPEN TPen_gray;
      HBRUSH TBrush_black;
 	 HPEN TPen_black;
 	 HBRUSH TBrush_font;
 
 
-	void DrawPixel(HDC hdc, colors color, int x, int y, int width, int height) { //Функция рисования пикселя
+	void DrawPixel(HDC hdc, colors color, int x, int y, int width, int height) { //Р¤СѓРЅРєС†РёСЏ СЂРёСЃРѕРІР°РЅРёСЏ РїРёРєСЃРµР»СЏ
 	   
 		if (color == Gray) {
 
-			SelectObject(hdc, TPen_gray); // Выбор пера в контескт рисования
+			SelectObject(hdc, TPen_gray); // Р’С‹Р±РѕСЂ РїРµСЂР° РІ РєРѕРЅС‚РµСЃРєС‚ СЂРёСЃРѕРІР°РЅРёСЏ
 		}
 		else {
 
-			SelectObject(hdc, TPen_black); // Выбор пера в контескт рисования
+			SelectObject(hdc, TPen_black); // Р’С‹Р±РѕСЂ РїРµСЂР° РІ РєРѕРЅС‚РµСЃРєС‚ СЂРёСЃРѕРІР°РЅРёСЏ
 		}
 
 
-		SelectObject(hdc, TBrush_font); // Выбор кисти в контескт рисования, фон пикселя
+		SelectObject(hdc, TBrush_font); // Р’С‹Р±РѕСЂ РєРёСЃС‚Рё РІ РєРѕРЅС‚РµСЃРєС‚ СЂРёСЃРѕРІР°РЅРёСЏ, С„РѕРЅ РїРёРєСЃРµР»СЏ
 		 
 
-		Rectangle(hdc, x, y, x + width, y + height); // Рисуем прямоугольник
+		Rectangle(hdc, x, y, x + width, y + height); // Р РёСЃСѓРµРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє
 
 		if (color == Gray) { 
 			
@@ -237,30 +237,30 @@ private:
 		else {
 			SelectObject(hdc, TBrush_black);
 		}
-		Rectangle(hdc, x + int(width*0.2), y + int(height*0.2), x + int(width*0.8), y + int(height*0.8));  // Рисуем внутренний прямоугольник
+		Rectangle(hdc, x + int(width*0.2), y + int(height*0.2), x + int(width*0.8), y + int(height*0.8));  // Р РёСЃСѓРµРј РІРЅСѓС‚СЂРµРЅРЅРёР№ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє
 
 	}
 
-	void DrawFrame(HDC hdc, int x, int y, int width, int height) {	// Рисуе рамку
+	void DrawFrame(HDC hdc, int x, int y, int width, int height) {	// Р РёСЃСѓРµ СЂР°РјРєСѓ
 		SelectObject(hdc, GetStockObject(HOLLOW_BRUSH));
 		Rectangle(hdc, x, y, x + width, y + height);
 	}
 };
 
-ETetris Tetris; // Создаем экземпляр оьекта 
+ETetris Tetris; // РЎРѕР·РґР°РµРј СЌРєР·РµРјРїР»СЏСЂ РѕСЊРµРєС‚Р° 
 
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) // Функция для обработки сообщений windows
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) // Р¤СѓРЅРєС†РёСЏ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё СЃРѕРѕР±С‰РµРЅРёР№ windows
 {
-	//Обьявляем переменные
-	int x, y; //для координат мыши
-	int x_pos, y_pos; // для координат пикселя в буфере(массиве) 
+	//РћР±СЊСЏРІР»СЏРµРј РїРµСЂРµРјРµРЅРЅС‹Рµ
+	int x, y; //РґР»СЏ РєРѕРѕСЂРґРёРЅР°С‚ РјС‹С€Рё
+	int x_pos, y_pos; // РґР»СЏ РєРѕРѕСЂРґРёРЅР°С‚ РїРёРєСЃРµР»СЏ РІ Р±СѓС„РµСЂРµ(РјР°СЃСЃРёРІРµ) 
 	bool finde_x, finde_y;
-	HDC hdc; // Контекст устройства GDI
-	PAINTSTRUCT ps; // для инофрмации от GDI
-	static RECT rect; // для прямоугольника перерисовки части окна
+	HDC hdc; // РљРѕРЅС‚РµРєСЃС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР° GDI
+	PAINTSTRUCT ps; // РґР»СЏ РёРЅРѕС„СЂРјР°С†РёРё РѕС‚ GDI
+	static RECT rect; // РґР»СЏ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР° РїРµСЂРµСЂРёСЃРѕРІРєРё С‡Р°СЃС‚Рё РѕРєРЅР°
 
-	//Указатели на кнопки
+	//РЈРєР°Р·Р°С‚РµР»Рё РЅР° РєРЅРѕРїРєРё
 	static HWND draw_button;
 	static HWND Fill_button;
 	static HWND Save_button;
@@ -273,32 +273,32 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) // 
 	static char szBuffer[50];
 
 
-	switch (iMsg) //Разбор сообщения от windows
+	switch (iMsg) //Р Р°Р·Р±РѕСЂ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚ windows
 	{
-	case WM_CREATE: //Событие создания окна
+	case WM_CREATE: //РЎРѕР±С‹С‚РёРµ СЃРѕР·РґР°РЅРёСЏ РѕРєРЅР°
 		state = 1;
-		//Создаем кнопки
-		draw_button = CreateWindow("button", "Рисовать", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 12, 100, 20, hwnd, (HMENU)1, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
-		Fill_button = CreateWindow("button", "Закрасить", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 55, 100, 20, hwnd, (HMENU)2, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
-		Save_button = CreateWindow("button", "Сохранить", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 370, 100, 20, hwnd, (HMENU)3, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
-		Load_button = CreateWindow("button", "Загрузить", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 400, 100, 20, hwnd, (HMENU)4, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
-		Erase_button = CreateWindow("button", "Очистить", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 150, 100, 20, hwnd, (HMENU)5, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+		//РЎРѕР·РґР°РµРј РєРЅРѕРїРєРё
+		draw_button = CreateWindow("button", "Р РёСЃРѕРІР°С‚СЊ", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 12, 100, 20, hwnd, (HMENU)1, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+		Fill_button = CreateWindow("button", "Р—Р°РєСЂР°СЃРёС‚СЊ", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 55, 100, 20, hwnd, (HMENU)2, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+		Save_button = CreateWindow("button", "РЎРѕС…СЂР°РЅРёС‚СЊ", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 370, 100, 20, hwnd, (HMENU)3, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+		Load_button = CreateWindow("button", "Р—Р°РіСЂСѓР·РёС‚СЊ", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 400, 100, 20, hwnd, (HMENU)4, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+		Erase_button = CreateWindow("button", "РћС‡РёСЃС‚РёС‚СЊ", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 445, 150, 100, 20, hwnd, (HMENU)5, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 		rect.left = 20;
 		rect.top = 20;
 		rect.right = 430;
 		rect.bottom = 430;
 		return 0;
 
-	case WM_COMMAND: //Событие клика по кнопкам, в целом сообщения от элементов управления в wParam и lParam передаються подробности о типе сообщения
+	case WM_COMMAND: //РЎРѕР±С‹С‚РёРµ РєР»РёРєР° РїРѕ РєРЅРѕРїРєР°Рј, РІ С†РµР»РѕРј СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚ СЌР»РµРјРµРЅС‚РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ РІ wParam Рё lParam РїРµСЂРµРґР°СЋС‚СЊСЃСЏ РїРѕРґСЂРѕР±РЅРѕСЃС‚Рё Рѕ С‚РёРїРµ СЃРѕРѕР±С‰РµРЅРёСЏ
 		
-		switch (LOWORD(wParam)) { //Определяем на какую кнопку было нажатие по её id которое передаеться в wParam, а задеться в функции CreateWindow, с приведением типа к (HMENU)
+		switch (LOWORD(wParam)) { //РћРїСЂРµРґРµР»СЏРµРј РЅР° РєР°РєСѓСЋ РєРЅРѕРїРєСѓ Р±С‹Р»Рѕ РЅР°Р¶Р°С‚РёРµ РїРѕ РµС‘ id РєРѕС‚РѕСЂРѕРµ РїРµСЂРµРґР°РµС‚СЊСЃСЏ РІ wParam, Р° Р·Р°РґРµС‚СЊСЃСЏ РІ С„СѓРЅРєС†РёРё CreateWindow, СЃ РїСЂРёРІРµРґРµРЅРёРµРј С‚РёРїР° Рє (HMENU)
 		case 1: 
 			rect.left = 445;
 			rect.top = 110;
 			rect.right = 550;
 			rect.bottom = 130;
 			state = 1;
-			InvalidateRect(hwnd, &rect, TRUE); //Изменяем текст надписи и перерисовываем только прямоугольник с этой надписью 
+			InvalidateRect(hwnd, &rect, TRUE); //РР·РјРµРЅСЏРµРј С‚РµРєСЃС‚ РЅР°РґРїРёСЃРё Рё РїРµСЂРµСЂРёСЃРѕРІС‹РІР°РµРј С‚РѕР»СЊРєРѕ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє СЃ СЌС‚РѕР№ РЅР°РґРїРёСЃСЊСЋ 
 		break;
 
 		case 2:
@@ -307,41 +307,41 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) // 
 			rect.right = 550;
 			rect.bottom = 130;
 			state = 2;	
-			InvalidateRect(hwnd, &rect, TRUE); //Изменяем текст надписи и перерисовываем только прямоугольник с этой надписью 
+			InvalidateRect(hwnd, &rect, TRUE); //РР·РјРµРЅСЏРµРј С‚РµРєСЃС‚ РЅР°РґРїРёСЃРё Рё РїРµСЂРµСЂРёСЃРѕРІС‹РІР°РµРј С‚РѕР»СЊРєРѕ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє СЃ СЌС‚РѕР№ РЅР°РґРїРёСЃСЊСЋ 
 		break;
 
 		case 3:
-			Tetris.SaveScreen(); //Вызываем функция сохраниения буфера экрана
+			Tetris.SaveScreen(); //Р’С‹Р·С‹РІР°РµРј С„СѓРЅРєС†РёСЏ СЃРѕС…СЂР°РЅРёРµРЅРёСЏ Р±СѓС„РµСЂР° СЌРєСЂР°РЅР°
 		break;
 
 		case 4:
-			Tetris.OpenScreen(hwnd); //Вызываем функцию чтения буфера экрана из файла
+			Tetris.OpenScreen(hwnd); //Р’С‹Р·С‹РІР°РµРј С„СѓРЅРєС†РёСЋ С‡С‚РµРЅРёСЏ Р±СѓС„РµСЂР° СЌРєСЂР°РЅР° РёР· С„Р°Р№Р»Р°
 			rect.left = 20;
 			rect.top = 20;
 			rect.right = 430;
 			rect.bottom = 430;
-			InvalidateRect(hwnd, &rect, TRUE); //Перерисовываем поле
+			InvalidateRect(hwnd, &rect, TRUE); //РџРµСЂРµСЂРёСЃРѕРІС‹РІР°РµРј РїРѕР»Рµ
 		break;
 		case 5:
-			Tetris.Erase(); //Вызываем функцию очистки экрана 
+			Tetris.Erase(); //Р’С‹Р·С‹РІР°РµРј С„СѓРЅРєС†РёСЋ РѕС‡РёСЃС‚РєРё СЌРєСЂР°РЅР° 
 			rect.left = 20;
 			rect.top = 20;
 			rect.right = 430;
 			rect.bottom = 430;
-			InvalidateRect(hwnd, &rect, TRUE); //Перерисовываем поле
+			InvalidateRect(hwnd, &rect, TRUE); //РџРµСЂРµСЂРёСЃРѕРІС‹РІР°РµРј РїРѕР»Рµ
 		break;
 		}
 		
 		return 0;
 
-	case WM_LBUTTONDOWN: //События щелчка по левой кнопки мыши
-		x = LOWORD(lParam); // Определяем координаты
+	case WM_LBUTTONDOWN: //РЎРѕР±С‹С‚РёСЏ С‰РµР»С‡РєР° РїРѕ Р»РµРІРѕР№ РєРЅРѕРїРєРё РјС‹С€Рё
+		x = LOWORD(lParam); // РћРїСЂРµРґРµР»СЏРµРј РєРѕРѕСЂРґРёРЅР°С‚С‹
 		y = HIWORD(lParam);
 		x_pos = 0;
 		y_pos = 0;
 		finde_x = false;
 		finde_y = false;
-		if (x > 20 && x < 35) { //Определяем был ли клик по первому пикселю, если да переводим finde_x и finde_y в истину и невыполняем дальнейший перебор
+		if (x > 20 && x < 35) { //РћРїСЂРµРґРµР»СЏРµРј Р±С‹Р» Р»Рё РєР»РёРє РїРѕ РїРµСЂРІРѕРјСѓ РїРёРєСЃРµР»СЋ, РµСЃР»Рё РґР° РїРµСЂРµРІРѕРґРёРј finde_x Рё finde_y РІ РёСЃС‚РёРЅСѓ Рё РЅРµРІС‹РїРѕР»РЅСЏРµРј РґР°Р»СЊРЅРµР№С€РёР№ РїРµСЂРµР±РѕСЂ
 			x_pos = 1;
 			finde_x= true;
 		}
@@ -349,7 +349,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) // 
 			y_pos = 1;
 			finde_y = true;
 		}
-		//Если это не первый пиксел ищем по остальным, межпикселяное рассотяние в 5px так же учитываеться и если клик был между пикселями это не взачет
+		//Р•СЃР»Рё СЌС‚Рѕ РЅРµ РїРµСЂРІС‹Р№ РїРёРєСЃРµР» РёС‰РµРј РїРѕ РѕСЃС‚Р°Р»СЊРЅС‹Рј, РјРµР¶РїРёРєСЃРµР»СЏРЅРѕРµ СЂР°СЃСЃРѕС‚СЏРЅРёРµ РІ 5px С‚Р°Рє Р¶Рµ СѓС‡РёС‚С‹РІР°РµС‚СЊСЃСЏ Рё РµСЃР»Рё РєР»РёРє Р±С‹Р» РјРµР¶РґСѓ РїРёРєСЃРµР»СЏРјРё СЌС‚Рѕ РЅРµ РІР·Р°С‡РµС‚
 			for (int i = 1; i <= 19; i++) {
 				if (!finde_x) {
 					if (x > 20 + (5 * i) + (15 * i) && x < 20 + (5 * i) + (15 * i) + 15) {
@@ -365,10 +365,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) // 
 				}
 			}
 			
-			if (state == 1) { //Если активна функция рисования, меняем режим отображения пикселя 
+			if (state == 1) { //Р•СЃР»Рё Р°РєС‚РёРІРЅР° С„СѓРЅРєС†РёСЏ СЂРёСЃРѕРІР°РЅРёСЏ, РјРµРЅСЏРµРј СЂРµР¶РёРј РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РїРёРєСЃРµР»СЏ 
 				if(x_pos != 0 && y_pos != 0) Tetris.SetPixelState(x_pos, y_pos);
 			}
-			else //Если активна функция закраски, заливаем выбранную область
+			else //Р•СЃР»Рё Р°РєС‚РёРІРЅР° С„СѓРЅРєС†РёСЏ Р·Р°РєСЂР°СЃРєРё, Р·Р°Р»РёРІР°РµРј РІС‹Р±СЂР°РЅРЅСѓСЋ РѕР±Р»Р°СЃС‚СЊ
 			{
 				if (x_pos != 0 && y_pos != 0) Tetris.Fill(x_pos, y_pos);
 			}
@@ -376,35 +376,35 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) // 
 			rect.top = 20;
 			rect.right = 430;
 			rect.bottom = 430;
-		InvalidateRect(hwnd, &rect, TRUE); //Перерисовываем поле
+		InvalidateRect(hwnd, &rect, TRUE); //РџРµСЂРµСЂРёСЃРѕРІС‹РІР°РµРј РїРѕР»Рµ
 
 
 		/*wsprintf(szBuffer, "XN-%d, YN-%d, x-%d, y-%d", x_pos,y_pos, x, y);
 		MessageBox(hwnd, szBuffer, "mouse", NULL);*/
 	     return 0;
 
-	case WM_PAINT: //Сообщение о перерисовке окна
+	case WM_PAINT: //РЎРѕРѕР±С‰РµРЅРёРµ Рѕ РїРµСЂРµСЂРёСЃРѕРІРєРµ РѕРєРЅР°
 
-		hdc = BeginPaint(hwnd, &ps); //Получаем контекст утройства 
+		hdc = BeginPaint(hwnd, &ps); //РџРѕР»СѓС‡Р°РµРј РєРѕРЅС‚РµРєСЃС‚ СѓС‚СЂРѕР№СЃС‚РІР° 
 
-		Tetris.CreateScreen(hdc); //Перерисовываем поле
+		Tetris.CreateScreen(hdc); //РџРµСЂРµСЂРёСЃРѕРІС‹РІР°РµРј РїРѕР»Рµ
 
-		//Перерисовываем надписи
+		//РџРµСЂРµСЂРёСЃРѕРІС‹РІР°РµРј РЅР°РґРїРёСЃРё
 		SetBkMode(hdc, TRANSPARENT);
-		TextOut(hdc, 445, 90, szBuffer, wsprintf(szBuffer, "Выбран режим:"));
+		TextOut(hdc, 445, 90, szBuffer, wsprintf(szBuffer, "Р’С‹Р±СЂР°РЅ СЂРµР¶РёРј:"));
 		if (state == 1) {
-			TextOut(hdc, 445, 110, szBuffer, wsprintf(szBuffer, "Рисование"));
+			TextOut(hdc, 445, 110, szBuffer, wsprintf(szBuffer, "Р РёСЃРѕРІР°РЅРёРµ"));
 		}
 		if (state == 2) {
-			TextOut(hdc, 445, 110, szBuffer, wsprintf(szBuffer, "Закраска"));
+			TextOut(hdc, 445, 110, szBuffer, wsprintf(szBuffer, "Р—Р°РєСЂР°СЃРєР°"));
 		}
 
-		//Освобождаем контекст утройства 
+		//РћСЃРІРѕР±РѕР¶РґР°РµРј РєРѕРЅС‚РµРєСЃС‚ СѓС‚СЂРѕР№СЃС‚РІР° 
 		EndPaint(hwnd, &ps);
 		return 0;
-	case WM_DESTROY: //События закрытия окна
+	case WM_DESTROY: //РЎРѕР±С‹С‚РёСЏ Р·Р°РєСЂС‹С‚РёСЏ РѕРєРЅР°
 		PostQuitMessage(0);
 		return 0;
 	}
-	return DefWindowProc(hwnd, iMsg, wParam, lParam); //Передача сообщения в ОС
+	return DefWindowProc(hwnd, iMsg, wParam, lParam); //РџРµСЂРµРґР°С‡Р° СЃРѕРѕР±С‰РµРЅРёСЏ РІ РћРЎ
 }
